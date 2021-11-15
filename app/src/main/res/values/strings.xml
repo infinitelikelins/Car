@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">贝芽机器人</string>
+    <string name="disable_devices">本机设备不支持使用低功耗蓝牙,应用将无法使用</string>
+    <string name="empty_devices">没有发现可连接的贝芽编程机器人</string>
+    <string name="prop_count_text">获得道具：</string>
+    <string name="step_count_text">前进步数：</string>
+    <string name="known_count_text">学到知识：</string>
+    <string name="coin_count_text">获得金币：</string>
+    <string name="welcome">欢迎使用贝芽编程机器人</string>
+    <string name="search_device">搜索设备</string>
+</resources>

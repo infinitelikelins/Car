@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/popup_result_success_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/fairy_result_border"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/fairy_result_border" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/step_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/prop_icon"
+        app:layout_constraintEnd_toStartOf="@+id/step_text"
+        app:layout_constraintStart_toStartOf="@id/fairy_result_border"
+        app:layout_constraintTop_toTopOf="@id/fairy_result_border"
+        app:srcCompat="@drawable/prop_icon" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/prop_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/fairy_result_border"
+        app:layout_constraintEnd_toEndOf="@id/step_icon"
+        app:layout_constraintStart_toStartOf="@id/step_icon"
+        app:layout_constraintTop_toBottomOf="@id/step_icon"
+        app:srcCompat="@drawable/path_icon" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/prop_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/prop_count_text"
+        android:textAlignment="center"
+        android:textColor="#9F5F18"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/prop_icon"
+        app:layout_constraintEnd_toStartOf="@id/prop_count"
+        app:layout_constraintStart_toEndOf="@id/prop_icon"
+        app:layout_constraintTop_toTopOf="@id/prop_icon" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/step_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/step_count_text"
+        android:textAlignment="center"
+        android:textColor="#9F5F18"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/step_icon"
+        app:layout_constraintEnd_toStartOf="@id/prop_count"
+        app:layout_constraintStart_toEndOf="@id/step_icon"
+        app:layout_constraintTop_toTopOf="@id/step_icon" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/step_count"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="#FE6B1C"
+        android:textSize="20sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/step_icon"
+        app:layout_constraintEnd_toEndOf="@id/fairy_result_border"
+        app:layout_constraintStart_toEndOf="@id/step_text"
+        app:layout_constraintTop_toTopOf="@id/step_icon"
+        tools:text="30" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/prop_count"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="#FE6B1C"
+        android:textSize="20sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/prop_icon"
+        app:layout_constraintEnd_toEndOf="@id/fairy_result_border"
+        app:layout_constraintStart_toEndOf="@id/prop_text"
+        app:layout_constraintTop_toTopOf="@id/prop_icon"
+        tools:text="30" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
