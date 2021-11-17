@@ -8,4 +8,8 @@
     <string name="coin_count_text">获得金币：</string>
     <string name="welcome">欢迎使用贝芽编程机器人</string>
     <string name="search_device">搜索设备</string>
+    <string name="use_manual">使用指南</string>
+    <string name="version_code">version: 1.1.0</string>
+    <string name="footer_devices">下拉刷新可重新搜索设备</string>
+    <string name="header_devices">可连接设备列表</string>
 </resources>

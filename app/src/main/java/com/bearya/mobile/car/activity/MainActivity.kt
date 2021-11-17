@@ -10,9 +10,10 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,8 +22,11 @@ import com.bearya.mobile.car.BuildConfig
 import com.bearya.mobile.car.R
 import com.bearya.mobile.car.adapter.DeviceAdapter
 import com.bearya.mobile.car.databinding.ActivityMainBinding
+import com.bearya.mobile.car.model.MainViewModel
 import com.bearya.mobile.car.startup.BluetoothInit
 import com.kaopiz.kprogresshud.KProgressHUD
+import com.kelin.apkUpdater.ApkUpdater
+import com.kelin.apkUpdater.util.NetWorkStateUtil
 import com.vise.baseble.ViseBle
 import com.vise.baseble.callback.IConnectCallback
 import com.vise.baseble.callback.scan.IScanCallback
@@ -35,7 +39,12 @@ import com.vmadalin.easypermissions.EasyPermissions
 
 class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
+    private val permissionBluetoothRequestCode = 0x11
+    private val permissionFileRequestCode = 0x12
+
     private lateinit var bindView: ActivityMainBinding
+    private val viewModel: MainViewModel by viewModels()
+
     private val deviceAdapter: DeviceAdapter by lazy {
         DeviceAdapter().apply {
             setOnItemClickListener { _, _, position ->
@@ -44,41 +53,46 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         }
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindView = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bindView.root)
 
-        bindView.freshLayout.setOnRefreshListener {
-            initBluetoothFeature()
-        }
-        bindView.freshLayout.isEnabled = false
-
         bindView.carDevices.apply {
             layoutManager =
-                LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
             adapter = deviceAdapter
         }
+        inflateEmptyView(getString(R.string.welcome))
 
-        val initEmptyView =
-            layoutInflater.inflate(R.layout.init_devices, bindView.root, false).apply {
-                findViewById<View>(R.id.search_devices).setOnClickListener { initBluetoothFeature() }
-                findViewById<AppCompatTextView>(R.id.version_code).text = "当前版本：${BuildConfig.VERSION_NAME}"
+        viewModel.newApk.observe(this) {
+            if (it != null && it.versionCode > BuildConfig.VERSION_CODE) {
+                if (EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    ApkUpdater.Builder().create().check(it, autoCheck = true, autoInstall = true)
+                } else {
+                    EasyPermissions.requestPermissions(
+                        this,
+                        "更新应用需要使用外部存储保存下载内容",
+                        permissionFileRequestCode,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    )
+                }
+            } else {
+                Toast.makeText(this, "当前已是最新版本", Toast.LENGTH_SHORT).show()
             }
-        deviceAdapter.setEmptyView(initEmptyView)
+        }
+
+        appUpdate()
 
     }
 
     /**
      * 1. 检查设备是否支持蓝牙
      */
-    @SuppressLint("InflateParams")
     private fun initBluetoothFeature() {
         if (packageManager.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             checkBluetoothStatus()
         } else {
-            bindView.freshLayout.isEnabled = false
             deviceAdapter.removeEmptyView()
             deviceAdapter.setEmptyView(R.layout.disable_devices)
         }
@@ -130,7 +144,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
             EasyPermissions.requestPermissions(
                 this,
                 "发现蓝牙设备需要打开并使用近距离定位功能",
-                0x11,
+                permissionBluetoothRequestCode,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION
             )
@@ -142,12 +156,16 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
      */
     private fun startScanDevice() {
         AppInitializer.getInstance(this).initializeComponent(BluetoothInit::class.java)
+        deviceAdapter.removeAllHeaderView()
+        deviceAdapter.removeAllFooterView()
         deviceAdapter.removeEmptyView()
-        deviceAdapter.setDiffNewData(mutableListOf())
-        bindView.freshLayout.isEnabled = false
+        deviceAdapter.setList(null)
 
-        val hud = KProgressHUD.create(this).setLabel("正在搜索中...")
-            .setDetailsLabel("请确保机器人开启蓝牙模式").setCancellable(false).show()
+        val hud = KProgressHUD.create(this)
+            .setLabel("正在搜索中...")
+            .setDetailsLabel("请确保机器人开启蓝牙模式")
+            .setCancellable(false)
+            .show()
         ViseBle.getInstance().startScan(ScanCallback(object : IScanCallback {
             override fun onDeviceFound(bluetoothLeDevice: BluetoothLeDevice?) {
 
@@ -155,14 +173,13 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
             override fun onScanFinish(bluetoothLeDeviceStore: BluetoothLeDeviceStore?) {
                 runOnUiThread {
-                    val emptyView =
-                        layoutInflater.inflate(R.layout.empty_devices, bindView.root, false)
-                            .apply { findViewById<View>(R.id.search_devices).setOnClickListener { initBluetoothFeature() } }
-                    deviceAdapter.setEmptyView(emptyView)
+                    inflateEmptyView(getString(R.string.empty_devices))
                     deviceAdapter.setDiffNewData(bluetoothLeDeviceStore?.deviceList?.filter {
                         it.name != null && it.name.startsWith("贝芽", true)
                     }?.toMutableList().apply {
-                        bindView.freshLayout.isEnabled = !isNullOrEmpty()
+                        if (!isNullOrEmpty()) {
+                            inflateHeaderAndFooterView()
+                        }
                     })
                     hud.dismiss()
                 }
@@ -170,10 +187,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
             override fun onScanTimeout() {
                 runOnUiThread {
-                    val emptyView =
-                        layoutInflater.inflate(R.layout.empty_devices, bindView.root, false)
-                            .apply { findViewById<View>(R.id.search_devices).setOnClickListener { initBluetoothFeature() } }
-                    deviceAdapter.setEmptyView(emptyView)
+                    inflateEmptyView(getString(R.string.empty_devices))
                     hud.dismiss()
                 }
             }
@@ -194,10 +208,8 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
                 runOnUiThread {
                     if (deviceMirror != null) {
                         startActivity(
-                            Intent(
-                                this@MainActivity,
-                                EmotionActivity::class.java
-                            ).putExtra("device", device)
+                            Intent(this@MainActivity, EmotionActivity::class.java)
+                                .putExtra("device", device)
                         )
                     } else {
                         Toast.makeText(this@MainActivity, "设备错误", Toast.LENGTH_LONG).show()
@@ -229,7 +241,8 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
-        startScanDevice()
+        if (requestCode == permissionBluetoothRequestCode) startScanDevice()
+        if (requestCode == permissionFileRequestCode) appUpdate()
     }
 
     override fun onRequestPermissionsResult(
@@ -245,6 +258,64 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         super.onDestroy()
         ViseBle.getInstance().disconnect()
         ViseBle.getInstance().clear()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun inflateEmptyView(tips: String) {
+        val initEmptyView =
+            layoutInflater.inflate(R.layout.empty_devices, bindView.root, false).apply {
+                findViewById<AppCompatTextView>(R.id.empty_text).text = tips
+                findViewById<AppCompatButton>(R.id.search_devices).apply {
+                    setOnClickListener {
+                        initBluetoothFeature()
+                    }
+                }
+                findViewById<AppCompatButton>(R.id.version_code).apply {
+                    text = "当前版本：${BuildConfig.VERSION_NAME}"
+                    setOnClickListener {
+                        appUpdate()
+                    }
+                }
+            }
+        deviceAdapter.setEmptyView(initEmptyView)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun inflateHeaderAndFooterView() {
+        deviceAdapter.addHeaderView(
+            layoutInflater.inflate(
+                R.layout.header_devices,
+                bindView.root,
+                false
+            )
+        )
+        val footerView =
+            layoutInflater.inflate(R.layout.footer_devices, bindView.root, false).apply {
+                findViewById<AppCompatButton>(R.id.search_devices).apply {
+                    setOnClickListener {
+                        initBluetoothFeature()
+                    }
+                }
+                findViewById<AppCompatButton>(R.id.version_code).apply {
+                    text = "当前版本：${BuildConfig.VERSION_NAME}"
+                    setOnClickListener {
+                        appUpdate()
+                    }
+                }
+            }
+        deviceAdapter.addFooterView(footerView)
+    }
+
+    private fun appUpdate() {
+        if (NetWorkStateUtil.isConnected(this)) {
+            val hud = KProgressHUD.create(this@MainActivity)
+                .setLabel("正在联网检查更新中...").setCancellable(false).show()
+            viewModel.checkUpdate {
+                hud.dismiss()
+            }
+        } else {
+            Toast.makeText(this@MainActivity, "设备未联网，请联网后再试", Toast.LENGTH_LONG).show()
+        }
     }
 
 }

@@ -7,24 +7,16 @@
     android:background="@color/daybreak_blue_4"
     tools:context=".activity.MainActivity">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/fresh_layout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/car_devices"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:swipeRefreshLayoutProgressSpinnerBackgroundColor="@color/teal_700">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/car_devices"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never"
-            android:scrollbars="none"
-            tools:itemCount="4"
-            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            tools:listitem="@layout/item_bluetooth_device"
-            tools:spanCount="3" />
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        tools:itemCount="4"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_bluetooth_device"
+        tools:spanCount="3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

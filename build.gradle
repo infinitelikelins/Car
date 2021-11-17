@@ -2,7 +2,6 @@
 buildscript {
 
     ext {
-        kotlin_version = '1.5.31'
         lifecycle_version = '2.4.0'
         room_version = '2.3.0'
         navigation_version = '2.4.0-alpha08'
@@ -16,7 +15,7 @@ buildscript {
 
     dependencies {
         classpath "com.android.tools.build:gradle:7.0.3"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${libs.versions.kotlin.version.get()}"
     }
 
 }

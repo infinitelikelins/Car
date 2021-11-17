@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-files-path
+        name="external_files_path"
+        path="Download" />
+    <external-path
+        name="external_storage_root"
+        path="." />
+    <external-path
+        name="zip_path"
+        path="YBCleanArchive/" />
+    <external-path
+        name="app_path"
+        path=".onewaveclean/" />
+    <external-path
+        name="image_path"
+        path=".onewaveclean/imagecache/" />
+    <external-path
+        name="private_path"
+        path=".onewaveclean/private/" />
+    <external-path
+        name="download_path"
+        path=".onewaveclean/download/" />
+    <external-path
+        name="backup_path"
+        path=".onewaveclean/backup/" />
+    <external-path
+        name="db_path"
+        path=".onewaveclean/db/" />
+    <external-path
+        name="external_files"
+        path="." />
+    <external-cache-path
+        name="gdt_sdk_download_path1"
+        path="com_qq_e_download" />
+    <cache-path
+        name="gdt_sdk_download_path2"
+        path="com_qq_e_download" />
+    <external-path
+        name="gdt_sdk_download_path"
+        path="GDTDOWNLOAD" />
+    <external-path
+        name="tt_external_root"
+        path="." />
+    <external-path
+        name="tt_external_download"
+        path="Download" />
+    <external-files-path
+        name="tt_external_files_download"
+        path="Download" />
+    <files-path
+        name="tt_internal_file_download"
+        path="Download" />
+    <cache-path
+        name="tt_internal_cache_download"
+        path="Download" />
+    <external-path
+        name="download"
+        path="." />
+    <external-files-path
+        name="external_file"
+        path="." />
+    <external-cache-path
+        name="external_cache"
+        path="." />
+    <files-path
+        name="files"
+        path="." />
+    <cache-path
+        name="cache"
+        path="." />
+
+</paths>

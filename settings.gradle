@@ -1,11 +1,35 @@
+enableFeaturePreview('VERSION_CATALOGS')
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+
     repositories {
         google()
         mavenCentral()
         maven { url "https://jitpack.io" }
         maven { url "https://maven.aliyun.com/repository/jcenter" }
     }
+
+    versionCatalogs {
+        libs {
+
+            version("kotlin-version", '1.6.0')
+            version("kotlinx_coroutines_version", '1.5.1')
+            alias("kotlin-stdlib-jdk7").to("org.jetbrains.kotlin", "kotlin-stdlib-jdk7").versionRef("kotlin-version")
+            alias("kotlin-stdlib-jdk8").to("org.jetbrains.kotlin", "kotlin-stdlib-jdk8").versionRef("kotlin-version")
+            alias("kotlinx-coroutines-core").to("org.jetbrains.kotlinx", "kotlinx-coroutines-core").versionRef("kotlinx_coroutines_version")
+            alias("kotlinx-coroutines-android").to("org.jetbrains.kotlinx", "kotlinx-coroutines-android").versionRef("kotlinx_coroutines_version")
+            bundle("kotlin", ["kotlin-stdlib-jdk7", "kotlin-stdlib-jdk8", "kotlinx-coroutines-core", "kotlinx-coroutines-android"])
+
+            alias("retrofit-core").to('com.squareup.retrofit2:retrofit:2.9.0')
+            alias("retrofit-gson").to('com.squareup.retrofit2:converter-gson:2.9.0')
+            alias("retrofit-okhttp").to('com.squareup.okhttp3:okhttp:4.9.1')
+            alias("retrofit-logging").to('com.squareup.okhttp3:logging-interceptor:4.9.1')
+            bundle("retrofit", ["retrofit-core", "retrofit-gson", "retrofit-okhttp", "retrofit-logging"])
+
+        }
+    }
+
 }
 rootProject.name = "Car"
 include ':app'
