@@ -16,7 +16,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     val newApk: MutableLiveData<UpdateInfoImpl?> by lazy { MutableLiveData<UpdateInfoImpl?>() }
 
-    fun checkUpdate(finish: () -> Unit) = viewModelScope.launch {
+    fun checkUpdate(finish: (() -> Unit)? = null) = viewModelScope.launch {
         try {
             delay(3000)
             val response = Api.checkAppUpdate()
@@ -26,7 +26,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             newApk.setData(null)
         } finally {
             withContext(Dispatchers.Main) {
-                finish.invoke()
+                finish?.invoke()
             }
         }
     }

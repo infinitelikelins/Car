@@ -314,7 +314,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
                 hud.dismiss()
             }
         } else {
-            Toast.makeText(this@MainActivity, "设备未联网，请联网后再试", Toast.LENGTH_LONG).show()
+            Toast.makeText(this@MainActivity, "设备未联网", Toast.LENGTH_LONG).show()
         }
     }
 
