@@ -14,7 +14,7 @@ dependencyResolutionManagement {
         libs {
 
             version("kotlin-version", '1.6.0')
-            version("kotlinx_coroutines_version", '1.5.1')
+            version("kotlinx_coroutines_version", '1.5.2')
             alias("kotlin-stdlib-jdk7").to("org.jetbrains.kotlin", "kotlin-stdlib-jdk7").versionRef("kotlin-version")
             alias("kotlin-stdlib-jdk8").to("org.jetbrains.kotlin", "kotlin-stdlib-jdk8").versionRef("kotlin-version")
             alias("kotlinx-coroutines-core").to("org.jetbrains.kotlinx", "kotlinx-coroutines-core").versionRef("kotlinx_coroutines_version")
