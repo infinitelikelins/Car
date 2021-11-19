@@ -46,6 +46,19 @@
         tools:targetApi="N">
 
         <activity
+            android:name="com.vmadalin.easypermissions.components.TestActivity"
+            tools:node="remove"
+            tools:ignore="MissingClass" />
+        <activity
+            android:name="com.vmadalin.easypermissions.components.TestAppCompatActivity"
+            tools:node="remove"
+            tools:ignore="MissingClass" />
+        <activity
+            android:name="com.vmadalin.easypermissions.components.TestSupportFragmentActivity"
+            tools:node="remove"
+            tools:ignore="MissingClass" />
+
+        <activity
             android:name=".activity.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
