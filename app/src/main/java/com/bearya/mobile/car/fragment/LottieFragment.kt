@@ -12,7 +12,7 @@ class LottieFragment : Fragment() {
 
     companion object {
         fun newInstance(lottieName: String): LottieFragment =
-            LottieFragment().apply { arguments = bundleOf(Pair("lottieName", lottieName)) }
+            LottieFragment().apply { arguments = bundleOf("lottieName" to lottieName) }
     }
 
     private lateinit var bindView: FragmentLottieBinding

@@ -12,10 +12,8 @@ import com.bearya.mobile.car.databinding.FragmentFrameBinding
 class FrameFragment : Fragment() {
 
     companion object {
-        fun newInstance(drawableResArrays: Int): FrameFragment {
-            val args = bundleOf(Pair("drawableResArrays", drawableResArrays))
-            return FrameFragment().apply { arguments = args }
-        }
+        fun newInstance(drawableResArrays: Int): FrameFragment =
+            FrameFragment().apply { arguments = bundleOf("drawableResArrays" to drawableResArrays) }
     }
 
     private lateinit var bindView: FragmentFrameBinding
