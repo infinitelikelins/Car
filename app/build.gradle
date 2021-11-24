@@ -14,12 +14,13 @@ android {
         applicationId "com.bearya.mobile.car"
         minSdk 21
         targetSdk 31
-        versionCode 201
-        versionName "2.0.1"
+        versionCode 210
+        versionName "2.1.0"
         buildFeatures {
             viewBinding true
         }
     }
+
     signingConfigs {
         config {
             keyAlias 'BeiYa'
@@ -28,6 +29,7 @@ android {
             keyPassword 'BeiYa!@#'
         }
     }
+
     buildTypes {
         debug {
             signingConfig signingConfigs.config
@@ -42,13 +44,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
             if ("release" == buildType.name)
@@ -57,21 +62,15 @@ android {
                 output.outputFileName = "bearya_car_debug_${defaultConfig.versionName}_${releaseDate()}.apk"
         }
     }
+
 }
 
 dependencies {
 
     implementation libs.bundles.kotlin
     implementation libs.bundles.retrofit
+    implementation libs.bundles.lifecycle
 
-    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-process:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
     implementation 'androidx.startup:startup-runtime:1.1.0'
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.activity:activity-ktx:1.4.0'

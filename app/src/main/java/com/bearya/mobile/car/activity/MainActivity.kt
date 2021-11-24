@@ -10,11 +10,17 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.UnderlineSpan
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.text.bold
+import androidx.core.text.buildSpannedString
+import androidx.core.text.inSpans
+import androidx.core.text.italic
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.startup.AppInitializer
@@ -63,7 +69,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
                 LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
             adapter = deviceAdapter
         }
-        inflateEmptyView(getString(R.string.welcome))
+        inflateInitView()
 
         viewModel.newApk.observe(this) {
             if (it != null && it.versionCode > BuildConfig.VERSION_CODE) {
@@ -173,7 +179,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
             override fun onScanFinish(bluetoothLeDeviceStore: BluetoothLeDeviceStore?) {
                 runOnUiThread {
-                    inflateEmptyView(getString(R.string.empty_devices))
+                    inflateEmptyView()
                     deviceAdapter.setDiffNewData(bluetoothLeDeviceStore?.deviceList?.filter {
                         it.name != null && it.name.startsWith("贝芽", true)
                     }?.toMutableList().apply {
@@ -187,7 +193,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
             override fun onScanTimeout() {
                 runOnUiThread {
-                    inflateEmptyView(getString(R.string.empty_devices))
+                    inflateEmptyView()
                     hud.dismiss()
                 }
             }
@@ -261,10 +267,29 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun inflateEmptyView(tips: String) {
+    private fun inflateInitView() {
+        val initEmptyView =
+            layoutInflater.inflate(R.layout.init_devices, bindView.root, false).apply {
+                findViewById<AppCompatTextView>(R.id.welcome).text = welcomeUser()
+                findViewById<AppCompatButton>(R.id.search_devices).apply {
+                    setOnClickListener {
+                        initBluetoothFeature()
+                    }
+                }
+                findViewById<AppCompatButton>(R.id.version_code).apply {
+                    text = "当前版本：${BuildConfig.VERSION_NAME}"
+                    setOnClickListener {
+                        appUpdate()
+                    }
+                }
+            }
+        deviceAdapter.setEmptyView(initEmptyView)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun inflateEmptyView() {
         val initEmptyView =
             layoutInflater.inflate(R.layout.empty_devices, bindView.root, false).apply {
-                findViewById<AppCompatTextView>(R.id.empty_text).text = tips
                 findViewById<AppCompatButton>(R.id.search_devices).apply {
                     setOnClickListener {
                         initBluetoothFeature()
@@ -282,13 +307,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
     @SuppressLint("SetTextI18n")
     private fun inflateHeaderAndFooterView() {
-        deviceAdapter.addHeaderView(
-            layoutInflater.inflate(
-                R.layout.header_devices,
-                bindView.root,
-                false
-            )
-        )
+        deviceAdapter.addHeaderView(layoutInflater.inflate(R.layout.header_devices, bindView.root, false))
         val footerView =
             layoutInflater.inflate(R.layout.footer_devices, bindView.root, false).apply {
                 findViewById<AppCompatButton>(R.id.search_devices).apply {
@@ -317,5 +336,20 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
             Toast.makeText(this@MainActivity, "设备未联网", Toast.LENGTH_LONG).show()
         }
     }
+
+    private fun welcomeUser() = buildSpannedString {
+        inSpans(AbsoluteSizeSpan(160), UnderlineSpan()) { append("Hel") }
+        inSpans(AbsoluteSizeSpan(160)) { append("lo") }
+        append("\n")
+        bold {
+            inSpans(AbsoluteSizeSpan(125)) { append("欢迎使用") }
+        }
+        append("\n")
+        italic {
+            inSpans(AbsoluteSizeSpan(80)) { append("STEAM") }
+        }
+        inSpans(AbsoluteSizeSpan(80)) { append("创编机器人") }
+    }
+
 
 }

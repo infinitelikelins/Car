@@ -4,37 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="@drawable/ic_connect_device_bg">
+    android:background="@drawable/ic_init_device_bg">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/empty_tips"
+        android:id="@+id/welcome"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:maxLines="1"
-        android:text="@string/empty_devices"
+        android:layout_height="176dp"
+        android:lineSpacingExtra="8dp"
+        android:layout_margin="32dp"
+        android:gravity="start"
+        android:maxLines="4"
         android:textColor="@color/white"
-        android:textSize="22sp"
-        app:drawableBottomCompat="@drawable/ic_none_device"
+        app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.05"
+        tools:text="@string/welcome"
+        tools:textColor="@color/white" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/search_devices"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="160dp"
         android:background="@drawable/ripple_polar_lime"
+        android:elevation="2dp"
         android:text="@string/search_device"
-        android:textColor="@color/gray_1"
+        android:textColor="@color/gray_3"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/empty_tips" />
+        app:layout_constraintTop_toBottomOf="@id/welcome" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/version_code"
@@ -43,13 +46,23 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:background="@drawable/ripple_juice_orange"
+        android:elevation="2dp"
         android:gravity="center"
         android:maxLines="1"
-        android:textColor="@color/gray_1"
+        android:textColor="@color/gray_3"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_devices"
         tools:text="当前版本:1.1.022（发现新版本）" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_init_device_footer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

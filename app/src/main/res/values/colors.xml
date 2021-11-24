@@ -54,6 +54,10 @@
     <color name="sunset_orange_9">#873800</color>
     <color name="sunset_orange_10">#612500</color>
 
+    <color name="juice_orange_1">#FFB361</color>
+    <color name="juice_orange_2">#FDA84C</color>
+    <color name="juice_orange_3">#FC9D38</color>
+
     <color name="lime_1">#fcffe6</color>
     <color name="lime_2">#f4ffb8</color>
     <color name="lime_3">#eaff8f</color>
@@ -98,6 +102,10 @@
     <color name="polar_green_8">#237804</color>
     <color name="polar_green_9">#135200</color>
     <color name="polar_green_10">#092b00</color>
+
+    <color name="polar_lime_1">#6AEE70</color>
+    <color name="polar_lime_2">#2DCC3C</color>
+    <color name="polar_lime_3">#4CDE56</color>
 
     <color name="daybreak_blue_1">#E6F7FF</color>
     <color name="daybreak_blue_2">#BAE7FF</color>

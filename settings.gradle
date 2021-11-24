@@ -27,6 +27,15 @@ dependencyResolutionManagement {
             alias("retrofit-logging").to('com.squareup.okhttp3:logging-interceptor:4.9.1')
             bundle("retrofit", ["retrofit-core", "retrofit-gson", "retrofit-okhttp", "retrofit-logging"])
 
+            version("lifecycle-version", "2.4.0")
+            alias("lifecycle-runtime-ktx").to("androidx.lifecycle", "lifecycle-runtime-ktx").versionRef("lifecycle-version")
+            alias("lifecycle-livedata-ktx").to("androidx.lifecycle", "lifecycle-livedata-ktx").versionRef("lifecycle-version")
+            alias("lifecycle-viewmodel-ktx").to("androidx.lifecycle", "lifecycle-viewmodel-ktx").versionRef("lifecycle-version")
+            alias("lifecycle-common-java8").to("androidx.lifecycle", "lifecycle-common-java8").versionRef("lifecycle-version")
+            bundle("lifecycle", ["lifecycle-runtime-ktx", "lifecycle-livedata-ktx",
+                                 "lifecycle-viewmodel-ktx", "lifecycle-common-java8"])
+
+
         }
     }
 
