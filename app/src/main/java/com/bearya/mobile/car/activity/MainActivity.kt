@@ -149,7 +149,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         } else {
             EasyPermissions.requestPermissions(
                 this,
-                "发现蓝牙设备需要打开并使用近距离定位功能",
+                "注意：需允许打开定位功能，否则不能搜索到机器人！",
                 permissionBluetoothRequestCode,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -243,7 +243,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
-
+        if (requestCode == permissionBluetoothRequestCode) inflateEmptyView()
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {

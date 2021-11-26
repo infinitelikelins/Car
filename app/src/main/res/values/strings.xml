@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">贝芽创世界</string>
     <string name="disable_devices">本机设备不支持使用低功耗蓝牙,应用将无法使用</string>
-    <string name="empty_devices">没有发现可连接的设备</string>
+    <string name="empty_devices">没有发现可连接的设备\n请确认定位权限已打开</string>
     <string name="prop_count_text">获得道具：</string>
     <string name="step_count_text">前进步数：</string>
     <string name="known_count_text">学到知识：</string>
