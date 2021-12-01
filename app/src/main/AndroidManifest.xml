@@ -68,8 +68,16 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activity.ControllerActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".activity.EmotionActivity"
+            android:exported="true"
+            android:screenOrientation="landscape" />
+
+        <activity android:name=".activity.SpeedActivity"
             android:exported="true"
             android:screenOrientation="landscape" />
 

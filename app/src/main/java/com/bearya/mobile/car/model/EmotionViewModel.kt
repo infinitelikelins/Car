@@ -25,12 +25,12 @@ class EmotionViewModel : ViewModel() {
 
     private val channel: BluetoothGattChannel by lazy {
         BluetoothGattChannel.Builder()
-            .setBluetoothGatt(deviceMirror?.bluetoothGatt)
-            .setPropertyType(propertyType)
-            .setServiceUUID(UUID.fromString("000000ff-0000-1000-8000-00805f9b34fb"))
-            .setCharacteristicUUID(UUID.fromString("0000ff01-0000-1000-8000-00805f9b34fb"))
-            .setDescriptorUUID(null)
-            .builder()
+                .setBluetoothGatt(deviceMirror?.bluetoothGatt)
+                .setPropertyType(propertyType)
+                .setServiceUUID(UUID.fromString("000000ff-0000-1000-8000-00805f9b34fb"))
+                .setCharacteristicUUID(UUID.fromString("0000ff01-0000-1000-8000-00805f9b34fb"))
+                .setDescriptorUUID(null)
+                .builder()
     }
 
     private val emotionId: MutableLiveData<String> by lazy { MutableLiveData<String>().setData("e0010101") }
@@ -78,36 +78,36 @@ class EmotionViewModel : ViewModel() {
         deviceMirror = mirror
         deviceMirror?.bindChannel(object : IBleCallback {
             override fun onSuccess(
-                byteArray: ByteArray?,
-                bluetoothGattChannel: BluetoothGattChannel?,
-                bluetoothLeDevice: BluetoothLeDevice?
+                    byteArray: ByteArray?,
+                    bluetoothGattChannel: BluetoothGattChannel?,
+                    bluetoothLeDevice: BluetoothLeDevice?
             ) {
                 if (bluetoothGattChannel?.propertyType == PropertyType.PROPERTY_NOTIFY ||
-                    bluetoothGattChannel?.propertyType == PropertyType.PROPERTY_INDICATE
+                        bluetoothGattChannel?.propertyType == PropertyType.PROPERTY_INDICATE
                 )
                     mirror?.setNotifyListener(
-                        bluetoothGattChannel.gattInfoKey,
-                        object : IBleCallback {
-                            override fun onSuccess(
-                                data: ByteArray?,
-                                bluetoothGattChannel: BluetoothGattChannel?,
-                                bluetoothLeDevice: BluetoothLeDevice?
-                            ) {
-                                val encodeEmotionId = HexUtil.encodeHexStr(data)
-                                when {
-                                    encodeEmotionId.length == 8 ->
-                                        updateEmotion(encodeEmotionId)
-                                    encodeEmotionId.startsWith("e0010201") ->
-                                        updateProgrammerResult(encodeEmotionId)
-                                    encodeEmotionId.startsWith("e0010202") ->
-                                        updateFairyResult(encodeEmotionId)
+                            bluetoothGattChannel.gattInfoKey,
+                            object : IBleCallback {
+                                override fun onSuccess(
+                                        data: ByteArray?,
+                                        bluetoothGattChannel: BluetoothGattChannel?,
+                                        bluetoothLeDevice: BluetoothLeDevice?
+                                ) {
+                                    val encodeEmotionId = HexUtil.encodeHexStr(data)
+                                    when {
+                                        encodeEmotionId.length == 8 ->
+                                            updateEmotion(encodeEmotionId)
+                                        encodeEmotionId.startsWith("e0010201") ->
+                                            updateProgrammerResult(encodeEmotionId)
+                                        encodeEmotionId.startsWith("e0010202") ->
+                                            updateFairyResult(encodeEmotionId)
+                                    }
                                 }
-                            }
 
-                            override fun onFailure(exception: BleException?) {
+                                override fun onFailure(exception: BleException?) {
 
-                            }
-                        })
+                                }
+                            })
             }
 
             override fun onFailure(exception: BleException?) {
@@ -127,7 +127,6 @@ class EmotionViewModel : ViewModel() {
         else if (propertyType == PropertyType.PROPERTY_INDICATE)
             deviceMirror?.unregisterNotify(true)
         deviceMirror?.unbindChannel(channel)
-        deviceMirror?.disconnect()
     }
 
 }

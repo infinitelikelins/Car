@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_device_speed_bg">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/back"
+        android:layout_margin="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/vector_resource_return"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_percent="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/left_speed"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:background="@drawable/shape_device_left_speed"
+        android:gravity="center"
+        android:padding="32dp"
+        android:textColor="@color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4"
+        tools:text="200" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/shape_device_speed"
+        android:gravity="center"
+        android:paddingStart="10dp"
+        android:paddingTop="2dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="2dp"
+        android:text="@string/left_speed"
+        android:textColor="@color/daybreak_blue_9"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@id/left_speed"
+        app:layout_constraintStart_toStartOf="@id/left_speed"
+        app:layout_constraintTop_toTopOf="@id/left_speed" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/right_speed"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:background="@drawable/shape_device_right_speed"
+        android:gravity="center"
+        android:padding="32dp"
+        android:textColor="@color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4"
+        tools:text="200" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/shape_device_speed"
+        android:gravity="center"
+        android:paddingStart="10dp"
+        android:paddingTop="2dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="2dp"
+        android:text="@string/right_speed"
+        android:textColor="@color/daybreak_blue_9"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@id/right_speed"
+        app:layout_constraintStart_toStartOf="@id/right_speed"
+        app:layout_constraintTop_toTopOf="@id/right_speed" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/left_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="@string/plus"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/left_speed"
+        app:layout_constraintEnd_toEndOf="@id/left_speed"
+        app:layout_constraintTop_toTopOf="@id/left_speed" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/left_minus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="@string/minus"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/left_speed"
+        app:layout_constraintStart_toStartOf="@id/left_speed"
+        app:layout_constraintTop_toTopOf="@id/left_speed" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/right_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="@string/plus"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/right_speed"
+        app:layout_constraintEnd_toEndOf="@id/right_speed"
+        app:layout_constraintTop_toTopOf="@id/right_speed" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/right_minus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="@string/minus"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/right_speed"
+        app:layout_constraintStart_toStartOf="@id/right_speed"
+        app:layout_constraintTop_toTopOf="@id/right_speed" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/reset_speed"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/ripple_device_reset_speed"
+        android:gravity="center"
+        android:text="@string/reset_original_speed"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/fetch_speed"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/ripple_device_fetch_speed"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:text="@string/fetch_current_speed"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@id/reset_speed"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/save_speed"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/ripple_device_save_speed"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/save_settings"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

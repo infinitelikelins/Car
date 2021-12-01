@@ -14,4 +14,14 @@
     <string name="header_devices">可连接设备列表</string>
     <string name="device_name">STEAM创编机器人</string>
     <string name="device_address">94:3C:C6:66:04:0E</string>
+    <string name="speed_settings">速度设置</string>
+    <string name="emotion_display">情景同步</string>
+    <string name="save_settings">保存设置</string>
+    <string name="fetch_current_speed">获取当前速度</string>
+    <string name="plus">+</string>
+    <string name="minus">-</string>
+    <string name="reset_original_speed">恢复出厂速度</string>
+    <string name="left_speed">左轮速度</string>
+    <string name="right_speed">右轮速度</string>
+    <string name="function_attention">提示：搜索前,请先打开设备蓝牙和手机定位功能</string>
 </resources>

@@ -19,8 +19,18 @@ import com.bearya.mobile.car.popup.FairyResultPopup
 import com.bearya.mobile.car.popup.ProgrammerResultPopup
 import com.bearya.mobile.car.repository.ImageType
 import com.vise.baseble.ViseBle
+import com.vise.baseble.model.BluetoothLeDevice
 
 class EmotionActivity : AppCompatActivity() {
+
+    companion object {
+        @JvmStatic
+        fun start(context: Context, device: BluetoothLeDevice?) {
+            context.startActivity(
+                Intent(context, EmotionActivity::class.java).putExtra("device", device)
+            )
+        }
+    }
 
     private lateinit var bindView: ActivityEmotionBinding
 
@@ -43,14 +53,9 @@ class EmotionActivity : AppCompatActivity() {
         bindView = ActivityEmotionBinding.inflate(layoutInflater)
         setContentView(bindView.root)
 
-        emotionViewModel.bindChannel(
-            ViseBle.getInstance().getDeviceMirror(intent.getParcelableExtra("device"))
-        )
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-            localBroadcastManagerReceiver,
-            IntentFilter("ACTION_FINISH")
-        )
+        val device = intent.getParcelableExtra<BluetoothLeDevice?>("device")
+        val deviceMirror = ViseBle.getInstance().getDeviceMirror(device)
+        emotionViewModel.bindChannel(deviceMirror)
 
         // 过程的帧动画和表情动画交替
         emotionViewModel.emotion.observe(this) {
@@ -78,6 +83,11 @@ class EmotionActivity : AppCompatActivity() {
             basePopup = ProgrammerResultPopup(this, it)
             basePopup?.showPopupWindow()
         }
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                localBroadcastManagerReceiver,
+                IntentFilter("ACTION_FINISH")
+        )
 
     }
 

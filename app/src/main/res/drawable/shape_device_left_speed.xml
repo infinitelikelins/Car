@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <gradient
+        android:angle="270"
+        android:startColor="@color/daybreak_blue_5"
+        android:centerColor="@color/daybreak_blue_6"
+        android:endColor="@color/daybreak_blue_7" />
+
+    <corners android:radius="24dp" />
+
+    <size android:width="180dp"
+        android:height="180dp" />
+
+</shape>

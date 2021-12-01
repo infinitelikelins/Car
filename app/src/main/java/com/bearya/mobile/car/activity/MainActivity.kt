@@ -213,10 +213,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
             override fun onConnectSuccess(deviceMirror: DeviceMirror?) {
                 runOnUiThread {
                     if (deviceMirror != null) {
-                        startActivity(
-                            Intent(this@MainActivity, EmotionActivity::class.java)
-                                .putExtra("device", device)
-                        )
+                        ControllerActivity.start(this@MainActivity, device)
                     } else {
                         Toast.makeText(this@MainActivity, "设备错误", Toast.LENGTH_LONG).show()
                     }
