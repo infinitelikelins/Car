@@ -50,6 +50,7 @@ class ControllerActivity : AppCompatActivity(), View.OnClickListener {
         bindView.emotion.setOnClickListener(this)
         bindView.speed.setOnClickListener(this)
         bindView.back.setOnClickListener(this)
+        bindView.card.setOnClickListener(this)
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 localBroadcastManagerReceiver,
@@ -62,6 +63,7 @@ class ControllerActivity : AppCompatActivity(), View.OnClickListener {
         when (view?.id) {
             R.id.emotion -> EmotionActivity.start(this, device)
             R.id.speed -> SpeedActivity.start(this, device)
+            R.id.card -> CardActivity.start(this, device)
             R.id.back -> finish()
         }
     }

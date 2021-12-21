@@ -24,4 +24,8 @@
     <string name="left_speed">左轮速度</string>
     <string name="right_speed">右轮速度</string>
     <string name="function_attention">提示：搜索前,请先打开设备蓝牙和手机定位功能</string>
+    <string name="card_controller">图形编程</string>
+    <string name="card_run">执行指令</string>
+    <string name="choose_card">选择卡片</string>
+    <string name="click_to_modify">点击修改</string>
 </resources>

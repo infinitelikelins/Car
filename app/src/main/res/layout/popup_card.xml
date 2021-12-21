@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="540dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/pop_border"
+    android:orientation="vertical"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/choose_card_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="@string/choose_card"
+        android:textAlignment="center"
+        android:textColor="#81511C"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/card_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp"
+        app:tabMode="auto"
+        app:tabRippleColor="@android:color/transparent"
+        app:tabSelectedTextColor="@color/dust_red_4"
+        app:tabTextAppearance="@style/tab_text_size" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/instructions_recycler_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="5"
+        tools:itemCount="5"
+        tools:listitem="@layout/item_instructions" />
+
+</LinearLayout>

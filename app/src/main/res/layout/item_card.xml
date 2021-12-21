@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="120dp"
+    android:layout_height="match_parent"
+    tools:showIn="@layout/activity_card">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/parent_action"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/parent_action"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_margin="8dp"
+        android:padding="16dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/selector_upward" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/step_bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/step"
+        app:layout_constraintEnd_toEndOf="@id/parent_action"
+        app:layout_constraintStart_toStartOf="@id/parent_action"
+        app:layout_constraintTop_toBottomOf="@id/parent_action"
+        app:srcCompat="@drawable/ic_step_bg"
+        tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/step"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:gravity="center"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textAlignment="center"
+        android:textColor="#FFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/parent_action"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/parent_action"
+        tools:text="10"
+        tools:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

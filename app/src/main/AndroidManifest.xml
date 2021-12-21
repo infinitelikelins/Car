@@ -80,6 +80,11 @@
         <activity android:name=".activity.SpeedActivity"
             android:exported="true"
             android:screenOrientation="landscape" />
+        <activity android:name=".activity.CardActivity"
+            android:exported="true"
+            android:screenOrientation="landscape" >
+
+        </activity>
 
         <!--版本更新服务-->
         <service android:name="com.kelin.apkUpdater.DownloadService" />
