@@ -26,10 +26,7 @@ import com.bearya.mobile.car.repository.stepResource
 import com.kaopiz.kprogresshud.KProgressHUD
 import com.vise.baseble.ViseBle
 import com.vise.baseble.model.BluetoothLeDevice
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class CardActivity : AppCompatActivity() {
 
@@ -160,6 +157,7 @@ class CardActivity : AppCompatActivity() {
                 KProgressHUD.create(this).setLabel("指令正在发送中...").setCancellable(true).show()
             viewModel.responseResult.observe(this) {
                 if (it == "E0020201") {
+                    lifecycleScope.cancel()
                     viewModel.unbindChannel()
                     if (kProgressHUD != null && kProgressHUD.isShowing) {
                         kProgressHUD.dismiss()
@@ -167,6 +165,7 @@ class CardActivity : AppCompatActivity() {
                     Toast.makeText(this, "指令发送完成", Toast.LENGTH_SHORT).show()
                     EmotionActivity.start(this, device)
                 } else if (it == "E0020202") {
+                    lifecycleScope.cancel()
                     if (kProgressHUD != null && kProgressHUD.isShowing) {
                         kProgressHUD.dismiss()
                     }
@@ -182,34 +181,36 @@ class CardActivity : AppCompatActivity() {
                     }
                 }
             }
-
-            val cards = buildString {
-                var itemChildCount = 0
-                var totalCount = CardType.START.card.toInt(16)
-                append(CardType.FLAG.card) // 集合标志标识
-                cardAdapter.data.forEach {
-                    itemChildCount += if (it.step > 1) 1 else 0
-                } // 集合附带参数标识
-                append((cardAdapter.data.size + itemChildCount + 2).toString(16)
-                    .let { if (it.length % 2 == 0) it else "0$it" }) // 集合校验数量额
-                append(CardType.START.card) // 集合开始标识
-                cardAdapter.data.forEach { item ->
-                    append(item.cardType.card) // 集合指令标识
-                    totalCount += item.cardType.card.toInt(16)
-                    if ((item.cardType == CardType.FORWARD || item.cardType == CardType.CLOSURE) && item.step > 1) {
-                        val stepResource = stepResource(item.step)
-                        append("$stepResource")
-                        totalCount += stepResource?.toInt(16) ?: 0
-                    }
-                }
-                append(CardType.END.card) // 集合结尾标识
-                totalCount += CardType.END.card.toInt(16)
-                val total = totalCount.toString(16).let { if (it.length % 2 == 0) it else "0$it" }
-                append(total) // 集合校验数据总和额
-            }
-            viewModel.sendCardsToRobot(cards)
+            buildCards().run { viewModel.sendCardsToRobot(this) }
         }
     }
+
+    private fun buildCards() =
+        buildString {
+            var itemChildCount = 0
+            var totalCount = CardType.START.card.toInt(16)
+            append(CardType.FLAG.card) // 集合标志标识
+            cardAdapter.data.forEach {
+                itemChildCount += if (it.step > 1) 1 else 0
+            } // 集合附带参数标识
+            append((cardAdapter.data.size + itemChildCount + 2).toString(16)
+                .let { if (it.length % 2 == 0) it else "0$it" }) // 集合校验数量额
+            append(CardType.START.card) // 集合开始标识
+            cardAdapter.data.forEach { item ->
+                append(item.cardType.card) // 集合指令标识
+                totalCount += item.cardType.card.toInt(16)
+                if ((item.cardType == CardType.FORWARD || item.cardType == CardType.CLOSURE) && item.step > 1) {
+                    val stepResource = stepResource(item.step)
+                    append("$stepResource")
+                    totalCount += stepResource?.toInt(16) ?: 0
+                }
+            }
+            append(CardType.END.card) // 集合结尾标识
+            totalCount += CardType.END.card.toInt(16)
+            val total = totalCount.toString(16).let { if (it.length % 2 == 0) it else "0$it" }
+            append(total) // 集合校验数据总和额
+        }
+
 
     private fun showCardPop(position: Int = cardAdapter.itemCount - 1, update: Boolean = false) {
         CardPopup(this).apply {
