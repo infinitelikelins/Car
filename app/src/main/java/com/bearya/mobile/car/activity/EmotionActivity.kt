@@ -91,6 +91,11 @@ class EmotionActivity : AppCompatActivity() {
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        emotionViewModel.unbindChannel()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(localBroadcastManagerReceiver)

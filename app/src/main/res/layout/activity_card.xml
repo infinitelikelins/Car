@@ -29,6 +29,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/scene_sync"
+        android:layout_width="160dp"
+        android:layout_height="40dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/ripple_sunrise_yellow"
+        android:gravity="center"
+        android:text="@string/scene_sync"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/card_run"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cards"
         android:layout_width="match_parent"

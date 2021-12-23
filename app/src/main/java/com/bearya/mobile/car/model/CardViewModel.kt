@@ -21,7 +21,7 @@ class CardViewModel : ViewModel() {
     private val notifyPropertyType: PropertyType = PropertyType.PROPERTY_NOTIFY
     private val writePropertyType: PropertyType = PropertyType.PROPERTY_WRITE
     private var deviceMirror: DeviceMirror? = null
-    val responseResult: MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    val responseResult: MutableLiveData<String> by lazy { MutableLiveData("") }
 
     private val notifyChannel: BluetoothGattChannel by lazy {
         BluetoothGattChannel.Builder()
@@ -44,6 +44,7 @@ class CardViewModel : ViewModel() {
     }
 
     fun bindChannel(mirror: DeviceMirror?) {
+        responseResult.setData("null")
         deviceMirror = mirror
         deviceMirror?.bindChannel(object : IBleCallback {
             override fun onSuccess(
@@ -103,18 +104,13 @@ class CardViewModel : ViewModel() {
         }
     }
 
-    fun unbindChannel(){
+     fun unbindChannel() {
         if (notifyPropertyType == PropertyType.PROPERTY_NOTIFY)
             deviceMirror?.unregisterNotify(false)
         else if (notifyPropertyType == PropertyType.PROPERTY_INDICATE)
             deviceMirror?.unregisterNotify(true)
         deviceMirror?.unbindChannel(notifyChannel)
         deviceMirror?.unbindChannel(writeChannel)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        unbindChannel()
     }
 
     //外部调用发送数据方法

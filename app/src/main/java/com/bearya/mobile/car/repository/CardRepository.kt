@@ -10,7 +10,7 @@ enum class CardType(val card: String) {
     FORWARD("E8"),
     BACKWARD("E5"),
     LEFT("E7"),
-    RIGHT("E8"),
+    RIGHT("E6"),
     LOOP("D7"),
     CLOSURE("D8"),
 

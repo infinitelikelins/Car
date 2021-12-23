@@ -190,6 +190,7 @@ class SpeedViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             deviceMirror?.writeData(saveMessage)
         }
+        if (isSave) Toast.makeText(getApplication(), "速度保存成功", Toast.LENGTH_SHORT).show()
     }
 
     fun fetchCurrentSpeed() {

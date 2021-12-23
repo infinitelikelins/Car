@@ -38,7 +38,7 @@
         android:layout_margin="32dp"
         android:background="@drawable/ripple_device_controller_emotion"
         android:padding="32dp"
-        android:text="@string/emotion_display"
+        android:text="@string/scene_sync"
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/speed"

@@ -23,8 +23,8 @@ import com.bearya.mobile.car.popup.ReplacePopup
 import com.bearya.mobile.car.popup.StepPopup
 import com.bearya.mobile.car.repository.CardType
 import com.bearya.mobile.car.repository.stepResource
-import com.kaopiz.kprogresshud.KProgressHUD
 import com.vise.baseble.ViseBle
+import com.vise.baseble.core.DeviceMirror
 import com.vise.baseble.model.BluetoothLeDevice
 import kotlinx.coroutines.*
 
@@ -51,6 +51,7 @@ class CardActivity : AppCompatActivity() {
 
     private val viewModel: CardViewModel by viewModels()
     private var device: BluetoothLeDevice? = null
+    private var deviceMirror: DeviceMirror? = null
     private var animator: Animator? = null
     private lateinit var bindView: ActivityCardBinding
     private val cardAdapter: CardAdapter by lazy { CardAdapter() }
@@ -60,8 +61,13 @@ class CardActivity : AppCompatActivity() {
 
         bindView = ActivityCardBinding.inflate(layoutInflater)
         setContentView(bindView.root)
+
+        device = intent.getParcelableExtra("device")
+        deviceMirror = ViseBle.getInstance().getDeviceMirror(device)
+
         bindView.back.setOnClickListener { finish() }
         bindView.cardRun.setOnClickListener { cardRun() }
+        bindView.sceneSync.setOnClickListener { EmotionActivity.start(this, device) }
         bindView.cards.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
@@ -76,37 +82,45 @@ class CardActivity : AppCompatActivity() {
         cardAdapter.addFooterView(footer, 0, LinearLayoutManager.HORIZONTAL)
         cardAdapter.footerViewAsFlow = true
         cardAdapter.isAnimationFirstOnly = false
-        cardAdapter.addChildClickViewIds(R.id.parent_action, R.id.step_bg)
         cardAdapter.setOnItemChildClickListener { _, view, position ->
             when (view.id) {
                 R.id.parent_action -> replaceCardPopup(position, cardAdapter.getItem(position))
                 R.id.step_bg -> showStepPopup(position)
             }
         }
-        cardAdapter.setOnItemLongClickListener { _, _, position ->
-            cardAdapter.removeAt(position).let { true }
+        cardAdapter.setOnItemChildLongClickListener { _, _, position ->
+            cardAdapter.removeAt(position).let { false }
         }
         bindView.cards.adapter = cardAdapter
-
-        device = intent.getParcelableExtra("device")
-        val deviceMirror = ViseBle.getInstance().getDeviceMirror(device)
-        viewModel.bindChannel(deviceMirror)
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
             localBroadcastManagerReceiver,
             IntentFilter("ACTION_FINISH")
         )
 
+        viewModel.responseResult.observe(this) {
+            if (it == "E0020201") {
+                lifecycleScope.cancel()
+                Toast.makeText(this, "指令发送完成", Toast.LENGTH_SHORT).show()
+                EmotionActivity.start(this, device)
+            } else if (it == "E0020202") {
+                lifecycleScope.cancel()
+                Toast.makeText(this, "指令校验失败,发送失败,请重新执行.", Toast.LENGTH_LONG).show()
+            }
+        }
+
     }
 
     override fun onResume() {
         super.onResume()
         animator?.start()
+        viewModel.bindChannel(deviceMirror)
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
         animator?.cancel()
+        viewModel.unbindChannel()
     }
 
     override fun onDestroy() {
@@ -142,10 +156,10 @@ class CardActivity : AppCompatActivity() {
             }
         }
         if (loopCloseable != 0 && errorIndex > -1) {
-            Toast.makeText(this, "第${errorIndex + 1}张卡片错误", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "第${errorIndex + 1}张卡片错误,请检查", Toast.LENGTH_LONG).show()
             return false
         } else if (loopCloseable == 1) {
-            Toast.makeText(this, "第${actionIndex + 1}张卡片错误", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "第${actionIndex + 1}张卡片错误,请检查", Toast.LENGTH_LONG).show()
             return false
         }
         return true
@@ -153,64 +167,41 @@ class CardActivity : AppCompatActivity() {
 
     private fun cardRun() {
         if (checkCard()) {
-            val kProgressHUD =
-                KProgressHUD.create(this).setLabel("指令正在发送中...").setCancellable(true).show()
-            viewModel.responseResult.observe(this) {
-                if (it == "E0020201") {
-                    lifecycleScope.cancel()
-                    viewModel.unbindChannel()
-                    if (kProgressHUD != null && kProgressHUD.isShowing) {
-                        kProgressHUD.dismiss()
-                    }
-                    Toast.makeText(this, "指令发送完成", Toast.LENGTH_SHORT).show()
-                    EmotionActivity.start(this, device)
-                } else if (it == "E0020202") {
-                    lifecycleScope.cancel()
-                    if (kProgressHUD != null && kProgressHUD.isShowing) {
-                        kProgressHUD.dismiss()
-                    }
-                    Toast.makeText(this, "指令校验失败,发送失败,请重新执行.", Toast.LENGTH_LONG).show()
-                }
-            }
+            buildCards().apply { viewModel.sendCardsToRobot(this) }
+            Toast.makeText(this@CardActivity, "指令正在发送中", Toast.LENGTH_SHORT).show()
             lifecycleScope.launch {
                 delay(5000)
-                if (kProgressHUD != null && kProgressHUD.isShowing) {
-                    kProgressHUD.dismiss()
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(this@CardActivity, "发送失败", Toast.LENGTH_SHORT).show()
-                    }
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@CardActivity, "发送失败", Toast.LENGTH_SHORT).show()
                 }
             }
-            buildCards().run { viewModel.sendCardsToRobot(this) }
         }
     }
 
-    private fun buildCards() =
-        buildString {
-            var itemChildCount = 0
-            var totalCount = CardType.START.card.toInt(16)
-            append(CardType.FLAG.card) // 集合标志标识
-            cardAdapter.data.forEach {
-                itemChildCount += if (it.step > 1) 1 else 0
-            } // 集合附带参数标识
-            append((cardAdapter.data.size + itemChildCount + 2).toString(16)
-                .let { if (it.length % 2 == 0) it else "0$it" }) // 集合校验数量额
-            append(CardType.START.card) // 集合开始标识
-            cardAdapter.data.forEach { item ->
-                append(item.cardType.card) // 集合指令标识
-                totalCount += item.cardType.card.toInt(16)
-                if ((item.cardType == CardType.FORWARD || item.cardType == CardType.CLOSURE) && item.step > 1) {
-                    val stepResource = stepResource(item.step)
-                    append("$stepResource")
-                    totalCount += stepResource?.toInt(16) ?: 0
-                }
+    private fun buildCards() = buildString {
+        var itemChildCount = 0
+        var totalCount = CardType.START.card.toInt(16)
+        append(CardType.FLAG.card) // 集合标志标识
+        cardAdapter.data.forEach {
+            itemChildCount += if (it.step > 1) 1 else 0
+        } // 集合附带参数标识
+        append((cardAdapter.data.size + itemChildCount + 2).toString(16)
+            .let { if (it.length % 2 == 0) it else "0$it" }) // 集合校验数量额
+        append(CardType.START.card) // 集合开始标识
+        cardAdapter.data.forEach { item ->
+            append(item.cardType.card) // 集合指令标识
+            totalCount += item.cardType.card.toInt(16)
+            if ((item.cardType == CardType.FORWARD || item.cardType == CardType.CLOSURE) && item.step > 1) {
+                val stepResource = stepResource(item.step)
+                append("$stepResource")
+                totalCount += stepResource?.toInt(16) ?: 0
             }
-            append(CardType.END.card) // 集合结尾标识
-            totalCount += CardType.END.card.toInt(16)
-            val total = totalCount.toString(16).let { if (it.length % 2 == 0) it else "0$it" }
-            append(total) // 集合校验数据总和额
         }
-
+        append(CardType.END.card) // 集合结尾标识
+        totalCount += CardType.END.card.toInt(16)
+        val total = totalCount.toString(16).let { if (it.length % 2 == 0) it else "0$it" }
+        append(total) // 集合校验数据总和额
+    }
 
     private fun showCardPop(position: Int = cardAdapter.itemCount - 1, update: Boolean = false) {
         CardPopup(this).apply {
