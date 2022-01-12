@@ -11,7 +11,6 @@ import com.vise.baseble.core.DeviceMirror
 import com.vise.baseble.exception.BleException
 import com.vise.baseble.model.BluetoothLeDevice
 import com.vise.baseble.utils.HexUtil
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
@@ -99,12 +98,10 @@ class CardViewModel : ViewModel() {
     }
 
     fun sendCardsToRobot(cards: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            write(HexUtil.decodeHex(cards))
-        }
+        write(HexUtil.decodeHex(cards))
     }
 
-     fun unbindChannel() {
+    fun unbindChannel() {
         if (notifyPropertyType == PropertyType.PROPERTY_NOTIFY)
             deviceMirror?.unregisterNotify(false)
         else if (notifyPropertyType == PropertyType.PROPERTY_INDICATE)
@@ -114,7 +111,7 @@ class CardViewModel : ViewModel() {
     }
 
     //外部调用发送数据方法
-    private suspend fun write(data: ByteArray?) {
+    private fun write(data: ByteArray?) {
         if (dataInfoQueue != null) {
             dataInfoQueue!!.clear()
             dataInfoQueue = splitPacketFor20Byte(data)
@@ -124,14 +121,16 @@ class CardViewModel : ViewModel() {
 
     //发送队列，提供一种简单的处理方式，实际项目场景需要根据需求优化
     private var dataInfoQueue: Queue<ByteArray?>? = LinkedList()
-    private suspend fun send() {
+    private fun send() {
         if (dataInfoQueue != null && dataInfoQueue!!.isNotEmpty()) {
             if (dataInfoQueue!!.peek() != null && deviceMirror != null) {
                 deviceMirror?.writeData(dataInfoQueue!!.poll())
             }
-            if (dataInfoQueue!!.peek() != null) {
+        }
+        if (dataInfoQueue!!.peek() != null) {
+            viewModelScope.launch {
+                delay(500)
                 send()
-                delay(100)
             }
         }
     }

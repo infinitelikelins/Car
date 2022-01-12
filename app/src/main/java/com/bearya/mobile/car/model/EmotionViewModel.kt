@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
-import com.bearya.mobile.car.ext.setData
 import com.bearya.mobile.car.repository.ImageType
 import com.bearya.mobile.car.repository.emotionRepository
 import com.bearya.mobile.car.repository.frameRepository
@@ -33,7 +32,7 @@ class EmotionViewModel : ViewModel() {
             .builder()
     }
 
-    private val emotionId: MutableLiveData<String> by lazy { MutableLiveData<String>().setData("e0010101") }
+    private val emotionId: MutableLiveData<String> by lazy { MutableLiveData<String>("e0010101") }
 
     val emotion: LiveData<Pair<ImageType, Any>?> = emotionId.map {
         emotionRepository(it) ?: frameRepository(it)

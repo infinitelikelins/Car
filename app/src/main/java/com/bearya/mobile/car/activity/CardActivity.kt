@@ -172,7 +172,7 @@ class CardActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 delay(5000)
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@CardActivity, "发送失败", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CardActivity, "发送超时", Toast.LENGTH_SHORT).show()
                 }
             }
         }

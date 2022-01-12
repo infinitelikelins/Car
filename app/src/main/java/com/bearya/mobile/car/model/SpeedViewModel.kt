@@ -48,8 +48,8 @@ class SpeedViewModel(application: Application) : AndroidViewModel(application) {
             .builder()
     }
 
-    val leftSpeed: MutableLiveData<Int> by lazy { MutableLiveData<Int>().setData(180) }
-    val rightSpeed: MutableLiveData<Int> by lazy { MutableLiveData<Int>().setData(180) }
+    val leftSpeed: MutableLiveData<Int> by lazy { MutableLiveData<Int>(leftSpeedMin) }
+    val rightSpeed: MutableLiveData<Int> by lazy { MutableLiveData<Int>(rightSpeedMin) }
 
     fun leftAdd() {
         leftSpeed.value = when (leftSpeed.value) {
