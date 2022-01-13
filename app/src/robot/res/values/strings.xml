@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">贝芽机器人</string>
+    <string name="disable_devices">本机设备不支持使用低功耗蓝牙,应用将无法使用</string>
+    <string name="empty_devices">没有发现可连接的设备\n请确认定位权限已打开</string>
+    <string name="prop_count_text">获得道具：</string>
+    <string name="step_count_text">前进步数：</string>
+    <string name="known_count_text">学到知识：</string>
+    <string name="coin_count_text">获得金币：</string>
+    <string name="welcome">Hello\n欢迎使用\nSTEAM创编机器人</string>
+    <string name="search_device">搜索设备</string>
+    <string name="use_manual">使用指南</string>
+    <string name="version_code">version: 1.1.0</string>
+    <string name="footer_devices">下拉刷新可重新搜索设备</string>
+    <string name="header_devices">可连接设备列表</string>
+    <string name="device_name">STEAM创编机器人</string>
+    <string name="device_address">94:3C:C6:66:04:0E</string>
+    <string name="speed_settings">速度设置</string>
+    <string name="scene_sync">情景同步</string>
+    <string name="save_settings">保存设置</string>
+    <string name="fetch_current_speed">获取当前速度</string>
+    <string name="plus">+</string>
+    <string name="minus">-</string>
+    <string name="reset_original_speed">恢复出厂速度</string>
+    <string name="left_speed">左轮速度</string>
+    <string name="right_speed">右轮速度</string>
+    <string name="function_attention">提示：搜索前,请先打开设备蓝牙和手机定位功能</string>
+    <string name="card_controller">图形编程</string>
+    <string name="card_run">执行指令</string>
+    <string name="choose_card">选择指令</string>
+    <string name="click_to_modify">点击修改</string>
+</resources>

@@ -13,6 +13,6 @@ object Api : HttpRetrofit() {
      * App检测更新信息
      */
     suspend fun checkAppUpdate(): HttpResult<ServerApkUpdateInfo>? =
-        api?.checkAppUpdate(13, "", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
+        api?.checkAppUpdate(BuildConfig.APP_TYPE, "", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
 
 }

@@ -9,13 +9,10 @@ static def releaseDate() {
 
 android {
     compileSdk 31
-
     defaultConfig {
         applicationId "com.bearya.mobile.car"
         minSdk 21
         targetSdk 31
-        versionCode 234
-        versionName "2.3.4"
         buildFeatures {
             viewBinding true
         }
@@ -45,6 +42,61 @@ android {
         }
     }
 
+    flavorDimensions "default"
+
+    sourceSets {
+        main {
+            java {
+                srcDirs = ['src/main/java']
+            }
+            res {
+                srcDirs = ['src/main/res']
+            }
+            assets {
+                srcDirs = ['src/main/assets']
+            }
+        }
+
+        world {
+            java {
+                srcDirs = ['src/world/java']
+            }
+            res {
+                srcDirs = ['src/world/res']
+            }
+        }
+
+        robot {
+            java {
+                srcDirs = ['src/robot/java']
+            }
+            res {
+                srcDirs = ['src/robot/res']
+            }
+        }
+    }
+
+    productFlavors {
+
+        world {
+            versionCode 234
+            versionName "2.3.4"
+            buildConfigField "int", "APP_TYPE", "13"
+            manifestPlaceholders = [appName: "贝芽创世界"]
+            dimension "default"
+        }
+
+        robot {
+            versionCode 300
+            versionName "3.0.0"
+            applicationIdSuffix ".robot"
+            buildConfigField "int", "APP_TYPE", "14"
+            manifestPlaceholders = [appName: "贝芽机器人"]
+            dimension "default"
+        }
+
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -57,9 +109,11 @@ android {
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
             if ("release" == buildType.name)
-                output.outputFileName = "bearya_car_release_${defaultConfig.versionName}_${releaseDate()}.apk"
+                output.outputFileName =
+                        "bearya_car_${variant.productFlavors[0].name}_v${variant.productFlavors[0].versionName}_${releaseDate()}.apk"
             else
-                output.outputFileName = "bearya_car_debug_${defaultConfig.versionName}_${releaseDate()}.apk"
+                output.outputFileName =
+                        "${variant.productFlavors[0].name}_v${variant.productFlavors[0].versionName}.apk"
         }
     }
 
